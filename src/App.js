@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState} from 'react';
+import SearchForm from './SearchForm';
+import ShowList from './ShowList';
+import ShowSummary from './ShowSummary';
 
-function App() {
+const App = () => {
+  const [searchResults, setSearchResults] = useState([]);
+
+  const [selectedShow, setSelectedShow] = useState(null);
+
+  const handleSearch = (data) => {
+    setSearchResults(data);
+  };
+
+  const handleShowSelected = (show) => {
+    setSelectedShow(show);
+  }
+
+  const handleGoBack = () => {
+    setSelectedShow(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    {selectedShow ? (
+      <ShowSummary  selectedShow={selectedShow} onGoBack={handleGoBack}/> 
+    ) : (
+      <>
+            <SearchForm onSearch={handleSearch} />
+            <ShowList shows={searchResults} onShowSelected={handleShowSelected} />
+      </>
+    )}
+          
+            
     </div>
   );
-}
+};
 
 export default App;
